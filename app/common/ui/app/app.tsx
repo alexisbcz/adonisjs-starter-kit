@@ -1,5 +1,5 @@
-/// <reference path="../../adonisrc.ts" />
-/// <reference path="../../config/inertia.ts" />
+/// <reference path="../../../../adonisrc.ts" />
+/// <reference path="../../../../config/inertia.ts" />
 
 import '../css/app.css'
 import { hydrateRoot } from 'react-dom/client'
@@ -10,13 +10,15 @@ const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 
 createInertiaApp({
   progress: { color: 'var(--color-blue-600)' },
-
   title: (title) => (title ? `${title} - ${appName}` : appName),
-
   resolve: (name) => {
-    return resolvePageComponent(`../pages/${name}.tsx`, import.meta.glob('../pages/**/*.tsx'))
+    const firstPart = name.split('/')[0]
+    const rest = name.split('/').slice(1).join('/')
+    return resolvePageComponent(
+      `../../../${firstPart}/ui/pages/${rest}.tsx`,
+      import.meta.glob('../../../*/ui/pages/**/*.tsx')
+    )
   },
-
   setup({ el, App, props }) {
     hydrateRoot(el, <App {...props} />)
   },

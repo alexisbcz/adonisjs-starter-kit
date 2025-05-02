@@ -1,5 +1,5 @@
 import { defineConfig } from '@adonisjs/inertia'
-import type { InferSharedProps } from '@adonisjs/inertia/types'
+import type { InferSharedProps, PageProps } from '@adonisjs/inertia/types'
 
 const inertiaConfig = defineConfig({
   /**
@@ -11,20 +11,38 @@ const inertiaConfig = defineConfig({
    * Data that should be shared with all rendered pages
    */
   sharedData: {
-    // user: (ctx) => ctx.inertia.always(() => ctx.auth.user),
+    flashMessages: (ctx) => ctx.session?.flashMessages.all(),
+    errors: (ctx) => ctx.inertia.always(() => ctx.session?.flashMessages.get('errors')),
+    success: (ctx) => ctx.inertia.always(() => ctx.session?.flashMessages.get('success')),
+    user: (ctx) => ctx.auth?.user,
+    path: (ctx) => ctx.request.url(),
+    query: (ctx) => ctx.request.qs(),
+    params: (ctx) => ctx.params,
+    route: (ctx) => ctx.route?.name,
   },
+
+  /**
+   * Path to the client-side entrypoint
+   */
+  entrypoint: 'app/common/ui/app/app.tsx',
 
   /**
    * Options for the server-side rendering
    */
   ssr: {
     enabled: true,
-    entrypoint: 'inertia/app/ssr.tsx'
-  }
+    entrypoint: 'app/common/ui/app/ssr.tsx',
+  },
 })
 
 export default inertiaConfig
 
 declare module '@adonisjs/inertia/types' {
-  export interface SharedProps extends InferSharedProps<typeof inertiaConfig> {}
+  export interface SharedProps extends InferSharedProps<typeof inertiaConfig>, PageProps {}
+}
+
+declare module 'vite' {
+  interface ImportMeta {
+    readonly env: Record<string, string>
+  }
 }
