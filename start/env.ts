@@ -15,6 +15,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
   PORT: Env.schema.number(),
   APP_KEY: Env.schema.string(),
+  APP_URL: Env.schema.string(),
   VITE_APP_NAME: Env.schema.string(),
   HOST: Env.schema.string({ format: 'host' }),
   LOG_LEVEL: Env.schema.string(),
@@ -25,4 +26,12 @@ export default await Env.create(new URL('../', import.meta.url), {
   |----------------------------------------------------------
   */
   SESSION_DRIVER: Env.schema.enum(['cookie', 'memory'] as const),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring the mail package
+  |----------------------------------------------------------
+  */
+  RESEND_API_KEY: Env.schema.string(),
+  EMAIL_FROM: Env.schema.string(),
 })

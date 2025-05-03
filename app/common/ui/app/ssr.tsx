@@ -12,7 +12,10 @@ export default function render(page: any) {
       const firstPart = name.split('/')[0]
       const rest = name.split('/').slice(1).join('/')
       const pages = import.meta.glob('../../../*/ui/pages/**/*.tsx', { eager: true })
-      return pages[`../pages/${rest}.tsx`]
+      if (firstPart === 'common') {
+        return pages[`../pages/${rest}.tsx`]
+      }
+      return pages[`../../../${firstPart}/ui/pages/${rest}.tsx`]
     },
     setup: ({ App, props }) => <App {...props} />,
   })

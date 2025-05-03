@@ -14,6 +14,10 @@ createInertiaApp({
   resolve: (name) => {
     const firstPart = name.split('/')[0]
     const rest = name.split('/').slice(1).join('/')
+    if (firstPart === 'common') {
+      const pages = import.meta.glob('../pages/**/*.tsx', { eager: true })
+      return pages[`../pages/${rest}.tsx`]
+    }
     return resolvePageComponent(
       `../../../${firstPart}/ui/pages/${rest}.tsx`,
       import.meta.glob('../../../*/ui/pages/**/*.tsx')

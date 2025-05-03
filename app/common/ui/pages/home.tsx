@@ -1,10 +1,12 @@
 import React from 'react'
-import { Button } from '../components/button'
+import { Button } from '#common/ui/components/button'
+import useUser from '../hooks/use_user'
 
 export default function Home() {
+  const user = useUser()
   return (
     <>
-      <Button>hello</Button>
+      <Button>Hello {user.fullName}</Button>
     </>
   )
 }
